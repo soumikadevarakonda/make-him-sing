@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPERATION: MAKE HIM SING 🎤 • TOP SECRET</title>
+  <meta name="description" content="Top-secret playful mission to convince one reluctant human to sing exactly one song." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-dark">
+  <!-- Scanline & Ambient Background Grid -->
+  <div class="hud-overlay" aria-hidden="true">
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    <div class="radar-glow"></div>
+  </div>
+
+  <!-- Audio Controls & Mission Status Bar -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <span class="status-indicator">
+        <span class="blink-dot"></span>
+        <span class="status-label">DIRECTIVE: ACTIVE</span>
+      </span>
+      <span class="file-code">DOSSIER #SING-001-A</span>
+    </div>
+
+    <div class="nav-right">
+      <button id="sfx-toggle" class="nav-btn" aria-label="Toggle sound effects" title="Toggle audio feedback">
+        <span class="sfx-icon">🔊</span>
+        <span class="sfx-text">AUDIO: ON</span>
+      </button>
+      <button id="emergency-songs-btn" class="nav-btn emergency-btn" title="View easy song ideas">
+        <span>💡 EASY SONGS</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Dossier Card Wrapper -->
+    <div class="dossier-card" id="mission-card">
+      
+      <!-- Top Classified Banner & Clearance Stamp -->
+      <div class="card-header">
+        <div class="classified-tag">
+          <span class="tag-icon">⚠️</span>
+          <span class="tag-text">TOP SECRET • CLEARANCE LEVEL OMEGA</span>
+        </div>
+        <div class="stamp-container" id="stamp-box">
+          <div class="stamp stamp-classified" id="main-stamp">CLASSIFIED</div>
+        </div>
+      </div>
+
+      <!-- Dossier Metadata Pill Bar -->
+      <div class="meta-strip">
+        <div class="meta-item">
+          <span class="meta-label">TARGET:</span>
+          <span class="meta-val highlight-target">HUMAN IN DENIAL</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">CODE:</span>
+          <span class="meta-val">OPERATION 001</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">STATUS:</span>
+          <span class="meta-val" id="meta-status-text">UNCOMPLIANT</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">EXCUSES FILED:</span>
+          <span class="meta-val counter-pill" id="excuse-counter-badge">0 (DENIED)</span>
+        </div>
+      </div>
+
+      <!-- Mission Progress Tracker -->
+      <div class="progress-section" id="progress-wrapper">
+        <div class="progress-labels">
+          <span class="progress-title" id="progress-stage-name">MISSION PHASE: BRIEFING</span>
+          <span class="progress-pct" id="progress-percentage">0%</span>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-fill" id="progress-fill-bar" style="width: 0%;"></div>
+        </div>
+        <div class="phase-pips" id="phase-pips-container">
+          <span class="pip active" title="Landing"></span>
+          <span class="pip" title="Selection"></span>
+          <span class="pip" title="Scientific Fact"></span>
+          <span class="pip" title="Duration"></span>
+          <span class="pip" title="Song Choice"></span>
+          <span class="pip" title="Final Objective"></span>
+          <span class="pip" title="Action"></span>
+        </div>
+      </div>
+
+      <!-- VIEW PANELS (Single-Page Dynamic State) -->
+      <div class="panels-viewport" id="viewport">
+        
+        <!-- ================= PHASE 0: LANDING ================= -->
+        <section class="stage-panel active" id="stage-0" data-stage="0">
+          <div class="operation-badge-wrapper">
+            <div class="pulsing-radar-ring"></div>
+            <div class="operation-icon">🎤</div>
+          </div>
+          
+          <div class="hero-titles">
+            <div class="sub-headline">TOP SECRET • OPERATION 001</div>
+            <h1 class="main-headline">MAKE HIM SING.</h1>
+          </div>
+
+          <div class="speech-quote-box">
+            <p class="quote-text">
+              “He says he <span class="strike-quote">‘can't sing.’</span> Unfortunately for him, the special committee has concluded that this is <strong>not a legally recognized excuse</strong>.”
+            </p>
+          </div>
+
+          <div class="objective-callout">
+            <div class="objective-header">
+              <span class="crosshair-icon">🎯</span>
+              <span class="callout-title">PRIMARY MISSION OBJECTIVE</span>
+            </div>
+            <p class="objective-desc">
+              Convince one reluctant human to sing <strong>exactly one song</strong>.
+            </p>
+          </div>
+
+          <div class="action-button-group">
+            <button class="btn btn-primary btn-glitch" id="btn-start-operation">
+              <span class="btn-text">BEGIN OPERATION</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn btn-secondary btn-excuse" id="btn-excuse-landing">
+              <span class="btn-icon">🙄</span>
+              <span>I have an excuse</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= PHASE 1: SELECTION ================= -->
+        <section class="stage-panel" id="stage-1" data-stage="1">
+          <div class="stage-header-badge">PHASE 01 • TARGET DISCLOSURE</div>
+          <div class="stage-graphic-icon">🧪</div>
+          <h2 class="stage-heading">
+            You have been selected for a highly prestigious singing experiment.
+          </h2>
+          <p class="stage-body">
+            After reviewing approximately 4.8 billion candidates, the committee found zero records of you performing a solo ballad. This statistical anomaly must be immediately corrected.
+          </p>
+          <div class="dossier-fact-box">
+            <span class="fact-tag">INTEL:</span> Selection is non-transferable. Refusal will cause dramatic eye-rolling across all frequencies.
+          </div>
+          <div class="action-button-group">
+            <button class="btn btn-primary btn-next-stage">
+              <span>PROCEED TO STAGE 02</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn btn-secondary btn-excuse">
+              <span>I have an excuse 🙄</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= PHASE 2: SCIENTIFIC FINDING ================= -->
+        <section class="stage-panel" id="stage-2" data-stage="2">
+          <div class="stage-header-badge">PHASE 02 • SCIENTIFIC BRIEFING</div>
+          <div class="stage-graphic-icon">🔬</div>
+          <h2 class="stage-heading">
+            Scientific finding: <br/>
+            <span class="gradient-text">“I am not good at singing”</span> does NOT mean <br/>
+            <span class="danger-text">“I am prohibited from singing.”</span>
+          </h2>
+          <p class="stage-body">
+            Extensive laboratory testing has revealed that singing off-key causes zero structural damage to the human atmosphere. It actually builds character and produces 300% more laughter.
+          </p>
+          <div class="soundwave-container" aria-hidden="true">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          </div>
+          <div class="action-button-group">
+            <button class="btn btn-primary btn-next-stage">
+              <span>ACKNOWLEDGE SCIENTIFIC FACT</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn btn-secondary btn-excuse">
+              <span>I have an excuse 🙄</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= PHASE 3: DURATION LIMIT ================= -->
+        <section class="stage-panel" id="stage-3" data-stage="3">
+          <div class="stage-header-badge">PHASE 03 • TACTICAL CONCESSION</div>
+          <div class="stage-graphic-icon">⏱️</div>
+          <h2 class="stage-heading">
+            You only have to sing for <span class="highlight-yellow">20 seconds</span>.
+          </h2>
+          <p class="stage-body">
+            That is shorter than a microwave burrito. Shorter than waiting for Windows updates. Twenty seconds of vocal emission, and you are officially free of all obligations forever (or until next week).
+          </p>
+          <div class="timer-preview-card">
+            <div class="preview-clock">00:20</div>
+            <div class="preview-sub">That’s literally one chorus or half of Happy Birthday. You can do this.</div>
+          </div>
+          <div class="action-button-group">
+            <button class="btn btn-primary btn-next-stage">
+              <span>ACCEPT 20-SECOND TERMS</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn btn-secondary btn-excuse">
+              <span>I have an excuse 🙄</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= PHASE 4: SONG AUTONOMY ================= -->
+        <section class="stage-panel" id="stage-4" data-stage="4">
+          <div class="stage-header-badge">PHASE 04 • DIGNITY PRESERVATION</div>
+          <div class="stage-graphic-icon">📜</div>
+          <h2 class="stage-heading">
+            You may choose the song.
+          </h2>
+          <p class="stage-body">
+            This is your final opportunity to preserve your dignity. Pick an absolute banger, an anime opening, a national anthem, or even the ABCs. The committee guarantees sovereign musical immunity.
+          </p>
+          <div class="dossier-fact-box choice-box">
+            <span class="fact-tag">TERMS:</span> Whistling does not count as singing. Aggressive humming will be evaluated on a case-by-case basis.
+          </div>
+          <div class="action-button-group">
+            <button class="btn btn-primary btn-next-stage">
+              <span>REVIEW FINAL PROTOCOL</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn btn-secondary btn-excuse">
+              <span>I have an excuse 🙄</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= PHASE 5: THE MOTTO ================= -->
+        <section class="stage-panel" id="stage-5" data-stage="5">
+          <div class="stage-header-badge">PHASE 05 • SUPREME DIRECTIVE</div>
+          <div class="stage-graphic-icon">⭐</div>
+          <h2 class="stage-heading mega-bold">
+            ONE SONG.<br/>
+            ZERO JUDGEMENT.<br/>
+            <span class="highlight-green">MAXIMUM ENTERTAINMENT.</span>
+          </h2>
+          <p class="stage-body">
+            All legal, moral, and scientific avenues of escape have been systematically sealed. There is only one path forward.
+          </p>
+          <div class="action-button-group">
+            <button class="btn btn-primary btn-glitch btn-next-stage" id="btn-reach-final-task">
+              <span>ENTER FINAL DEPLOYMENT</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn btn-secondary btn-excuse">
+              <span>I have an excuse 🙄</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= PHASE 6: YOUR FINAL TASK ================= -->
+        <section class="stage-panel" id="stage-6" data-stage="6">
+          <div class="stage-header-badge urgent-badge">🚨 CRITICAL DECISION POINT</div>
+          <div class="stage-graphic-icon big-mic">🎤</div>
+          <h2 class="stage-heading final-task-title">
+            YOUR FINAL TASK
+          </h2>
+          <p class="final-task-subtitle">
+            Sing literally anything for <strong>20 seconds</strong>.
+          </p>
+
+          <div class="final-contract-card">
+            <ul class="contract-checklist">
+              <li><span>✅</span> <span>Pitch accuracy: NOT REQUIRED</span></li>
+              <li><span>✅</span> <span>Vocal warmup: COMPLETELY OPTIONAL</span></li>
+              <li><span>✅</span> <span>Dramatic passion: HIGHLY ENCOURAGED</span></li>
+              <li><span>✅</span> <span>Safe space guarantee: 100% UNCONDITIONAL</span></li>
+            </ul>
+          </div>
+
+          <!-- The Two Crucial Buttons -->
+          <div class="final-buttons-stack">
+            <button class="btn btn-massive-sing" id="btn-will-sing">
+              <span class="sing-pulse"></span>
+              <span class="btn-inner-content">
+                <span class="btn-icon">🎙️</span>
+                <span class="btn-title">I WILL SING</span>
+                <span class="btn-caption">(I surrender to the mission)</span>
+              </span>
+            </button>
+
+            <button class="btn btn-stall" id="btn-need-minute">
+              <span class="btn-icon">⏳</span>
+              <span class="btn-title">I NEED ONE MORE MINUTE</span>
+              <span class="btn-caption">(Tactical stall maneuver)</span>
+            </button>
+          </div>
+
+          <div class="excuse-fallback-link">
+            <button class="link-excuse-btn btn-excuse">Still have an excuse? Click here for rejection 🙄</button>
+          </div>
+        </section>
+
+        <!-- ================= PHASE 7: VICTORY & CELEBRATION ================= -->
+        <section class="stage-panel" id="stage-7" data-stage="7">
+          <div class="victory-confetti-anchor"></div>
+          <div class="victory-stamp-wrap">
+            <div class="stamp stamp-success">MISSION ACCOMPLISHED</div>
+          </div>
+          
+          <div class="celebration-headline-box">
+            <h1 class="victory-title">OPERATION SUCCESSFUL.</h1>
+            <h2 class="victory-subtitle">A HUMAN HAS BEEN VOCALLY DEPLOYED. 🚀🎶</h2>
+          </div>
+
+          <p class="victory-desc">
+            All satellite dish communications confirm: the target has agreed to vocalize. History will remember this day of unparalleled courage and comedic triumph.
+          </p>
+
+          <!-- Interactive 20-Second Courage Countdown & Song Prompter -->
+          <div class="courage-timer-card" id="courage-timer-box">
+            <div class="courage-card-header">
+              <span class="radar-dot"></span>
+              <span>20-SECOND LIVE VOCAL TIMER</span>
+            </div>
+            <div class="courage-display" id="courage-clock">00:20</div>
+            <div class="courage-timer-controls">
+              <button class="btn btn-start-timer" id="btn-start-courage-timer">
+                ▶ START 20s TIMER NOW
+              </button>
+              <button class="btn btn-reset-timer" id="btn-reset-courage-timer" style="display:none;">
+                ↺ RESET TIMER
+              </button>
+            </div>
+            <div class="courage-status-msg" id="courage-msg">Hit start whenever you begin singing!</div>
+          </div>
+
+          <!-- Official Agent Certificate of Bravery -->
+          <div class="certificate-box" id="certificate">
+            <div class="cert-header">
+              <span class="cert-badge">🎖️ VOCAL HONORS</span>
+              <span class="cert-title">CERTIFICATE OF ABSOLUTE BRAVERY</span>
+            </div>
+            <div class="cert-body">
+              Awarded to <strong>OUR DEAR ONLINE FRIEND</strong> for standing before the microphone in defiance of self-doubt. The committee declares your performance a masterclass in good sportsmanship.
+            </div>
+            <div class="cert-footer">
+              <span class="seal">OFFICIAL COMMITTEE SEAL 💮</span>
+              <button class="btn btn-copy-cert" id="btn-copy-debrief">
+                📋 COPY DEBRIEF FOR CHAT
+              </button>
+            </div>
+          </div>
+
+          <div class="victory-actions">
+            <button class="btn btn-secondary" id="btn-replay-mission">
+              🔄 REPLAY OPERATION
+            </button>
+            <button class="btn btn-primary" id="btn-blast-confetti">
+              🎉 MORE CONFETTI!
+            </button>
+          </div>
+        </section>
+
+      </div> <!-- /panels-viewport -->
+
+      <!-- Footer Disclaimer -->
+      <footer class="card-footer">
+        <p class="footer-note">
+          “No musical talent required. No judgement permitted. Dramatic theatrics encouraged.”
+        </p>
+      </footer>
+    </div> <!-- /dossier-card -->
+  </main>
+
+  <!-- ================= MODAL: EXCUSE REJECTION SYSTEM ================= -->
+  <div class="modal-backdrop" id="excuse-modal" aria-hidden="true" role="dialog" aria-labelledby="excuse-dialog-title">
+    <div class="modal-window excuse-window">
+      <div class="modal-top-bar">
+        <span class="modal-code">DIRECTIVE 404 • OBJECTION HANDLING</span>
+        <button class="modal-close-btn" id="btn-close-excuse" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="excuse-modal-body">
+        <div class="stamp-rejected-container">
+          <div class="stamp stamp-rejected">REJECTED BY COMMITTEE</div>
+        </div>
+
+        <div class="excuse-speaker-icon">📡</div>
+        <div class="excuse-dialog-badge">OFFICIAL VERDICT</div>
+        
+        <div class="excuse-quote-container">
+          <p class="excuse-quote-text" id="excuse-response-text">
+            “Counterargument rejected.”
+          </p>
+        </div>
+
+        <div class="excuse-stats-line">
+          Total Objections Overruled: <span id="modal-excuse-count">1</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-another-excuse">
+          <span>TRY ANOTHER EXCUSE 🙄</span>
+        </button>
+        <button class="btn btn-secondary" id="btn-accept-fate">
+          <span>ACCEPT MY FATE 🫡</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ONE MORE MINUTE STALL TIMER ================= -->
+  <div class="modal-backdrop" id="minute-modal" aria-hidden="true" role="dialog">
+    <div class="modal-window stall-window">
+      <div class="modal-top-bar">
+        <span class="modal-code">TACTICAL STALL APPROVED • 60 SECONDS</span>
+        <button class="modal-close-btn" id="btn-close-minute">&times;</button>
+      </div>
+
+      <div class="stall-body">
+        <div class="stall-badge">⏳ MENTAL PREPARATION IN PROGRESS</div>
+        <h3 class="stall-title">60-Second Grace Period Granted</h3>
+        
+        <div class="countdown-large" id="minute-countdown">01:00</div>
+
+        <div class="breathing-coach">
+          <div class="breathing-circle">
+            <span class="breathing-text" id="breathing-text">Inhale Courage...</span>
+          </div>
+        </div>
+
+        <div class="stall-tip-box" id="stall-tip">
+          “Tip #1: Remember, autotune is merely a mindset. Your true voice is acoustic gold.”
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-ready-early">
+          <span>I AM READY NOW! LET’S SING 🎤</span>
+        </button>
+        <button class="btn btn-secondary" id="btn-abort-minute">
+          <span>CLOSE (KEEP TIMER RUNNING)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: EMERGENCY EASY SONGS CHEAT SHEET ================= -->
+  <div class="modal-backdrop" id="songs-modal" aria-hidden="true" role="dialog">
+    <div class="modal-window songs-window">
+      <div class="modal-top-bar">
+        <span class="modal-code">CLASSIFIED ARSENAL • LOW-EFFORT SONGS</span>
+        <button class="modal-close-btn" id="btn-close-songs">&times;</button>
+      </div>
+
+      <div class="songs-modal-body">
+        <h3 class="songs-title">Emergency Song Selector 🎼</h3>
+        <p class="songs-desc">
+          Can't think of a song? Choose one of these certified low-risk, maximum-humor classics:
+        </p>
+
+        <div class="song-cards-grid">
+          <div class="song-card">
+            <div class="song-num">01</div>
+            <div class="song-info">
+              <div class="song-name">“Tequila” — The Champs</div>
+              <div class="song-why">Difficulty: 0/10. There is literally only one word in the entire song.</div>
+            </div>
+          </div>
+
+          <div class="song-card">
+            <div class="song-num">02</div>
+            <div class="song-info">
+              <div class="song-name">“Happy Birthday to You”</div>
+              <div class="song-why">Duration: 14 seconds. Universal, zero judgment, impossible to mess up.</div>
+            </div>
+          </div>
+
+          <div class="song-card">
+            <div class="song-num">03</div>
+            <div class="song-info">
+              <div class="song-name">“Twinkle, Twinkle, Little Star”</div>
+              <div class="song-why">Classic lullaby. Sing it with operatic dramatic passion for 10x comedic value.</div>
+            </div>
+          </div>
+
+          <div class="song-card">
+            <div class="song-num">04</div>
+            <div class="song-info">
+              <div class="song-name">“The Alphabet Song (A-B-C-D...)”</div>
+              <div class="song-why">Everyone knows it. Stop abruptly at ‘P’ and declare victory.</div>
+            </div>
+          </div>
+
+          <div class="song-card">
+            <div class="song-num">05</div>
+            <div class="song-info">
+              <div class="song-name">“Bohemian Rhapsody” (Just the Intro)</div>
+              <div class="song-why">“Is this the real life? Is this just fantasy?” — 12 seconds and you're legendary.</div>
+            </div>
+          </div>
+
+          <div class="song-card">
+            <div class="song-num">06</div>
+            <div class="song-info">
+              <div class="song-name">Aggressive Dramatic Humming</div>
+              <div class="song-why">Hum the Imperial March or Mission: Impossible with intense eye contact.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-pick-song-done">
+          <span>I HAVE CHOSEN MY WEAPON 🫡</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-hub" id="toast-hub" aria-live="polite"></div>
+
+  <!-- Custom Canvas Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
